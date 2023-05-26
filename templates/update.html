@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Update Threshold Config</title>
+    <!-- Add Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Update Threshold Config</h1>
+      <form method="post">
+        <div class="form-group">
+          <label for="app">App:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="app"
+            name="app"
+            value="{{ config[1] }}"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="env">Environment:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="env"
+            name="env"
+            value="{{ config[2] }}"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="component">Component:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="component"
+            name="component"
+            value="{{ config[3] }}"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="sub_component">Sub-Component:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="sub_component"
+            name="sub_component"
+            value="{{ config[4] }}"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="threshold">Threshold:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="threshold"
+            name="threshold"
+            value="{{ config[5] }}"
+            required
+          />
+        </div>
+        <!-- <div class="form-group">
+          <label for="active">Active:</label>
+          <input
+            type="checkbox"
+            class="form-control"
+            id="active"
+            name="active"
+            {%
+            if
+            config[6]
+            %}checked{%
+            endif
+            %}
+          />
+        </div> -->
+        <div class="form-check">
+          <label class="form-check-label form-check-label-mod" for="active"
+            >Active</label
+          >
+          <input type="checkbox" class="form-check-input" id="active" name="active" {% if config[6] %}checked{% endif %} />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+    <!-- Add Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

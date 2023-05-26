@@ -1,0 +1,40 @@
+/* Styles for the table in index.html */
+.my-table {
+  font-size: 0.9rem;
+  padding: 0.25rem;
+}
+
+
+.form-control {
+  width: 60%;
+  max-width: 300px;
+}
+
+tr.inactive {
+    /* background-color: #f2f2f2; */
+    background-color: #e6e6e6;
+  }
+
+  td.active {
+    /* background-color: #f2f2f2; */
+    font-weight: bold;
+  }
+
+  .form-check-input {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.3rem;
+    margin-left: 0;
+    background-color: transparent;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    
+  
+
+  }
+
+  .form-check-label-mod {
+    padding-right: 15px !important;
+  padding-bottom: 25px !important;
+  margin-left: -15px !important;
+  }

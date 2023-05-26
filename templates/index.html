@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Threshold Config</title>
+    <!-- Add Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Threshold Config</h1>
+      <div class="form-check text-right">
+        <label
+          class="form-check-label form-check-label-mod"
+          for="hideInactiveCheckbox"
+        >
+          Hide inactive records
+        </label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="hideInactiveCheckbox"
+        />
+      </div>
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>App</th>
+            <th>Environment</th>
+            <th>Component</th>
+            <th>Sub-Component</th>
+            <th>Threshold</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for config in configs %}
+          <tr
+            class="{% if not config[6] %}inactive{% endif %}{% if config[0] == edited_id %} table-success{% endif %}"
+          >
+            <td>{{ config[1] }}</td>
+            <td>{{ config[2] }}</td>
+            <td>{{ config[3] }}</td>
+            <td>{{ config[4] }}</td>
+            <td>{{ config[5] }}</td>
+            <td class="{% if config[6] %}active{% endif %}">
+              {{ "Yes" if config[6] else "No" }}
+            </td>
+            <td>
+              <a href="/update/{{ config[0] }}" class="btn btn-primary btn-sm"
+                >Edit</a
+              >
+              <button
+                class="btn btn-danger btn-sm"
+                onclick="confirmDelete({{ config[0] }})"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{{ url_for('create') }}" class="btn btn-success"
+        >Add Threshold</a
+      >
+    </div>
+    <!-- Add Bootstrap JavaScript -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      function confirmDelete(id) {
+        if (confirm("Are you sure you want to delete this config?")) {
+          $.ajax({
+            url: "/delete/" + id,
+            type: "POST",
+            success: function (result) {
+              window.location.reload();
+            },
+            error: function (xhr, status, error) {
+              alert("Error deleting config: " + error);
+            },
+          });
+        }
+      }
+    </script>
+    <script>
+      function toggleInactiveRows() {
+        var hideInactiveCheckbox = document.getElementById(
+          "hideInactiveCheckbox"
+        );
+        var rows = document.getElementsByTagName("tr");
+        for (var i = 0; i < rows.length; i++) {
+          var row = rows[i];
+          if (
+            row.classList.contains("inactive") &&
+            hideInactiveCheckbox.checked
+          ) {
+            row.style.display = "none";
+          } else {
+            row.style.display = "";
+          }
+        }
+      }
+    </script>
+    <script>
+      var hideInactiveCheckbox = document.getElementById(
+        "hideInactiveCheckbox"
+      );
+      hideInactiveCheckbox.addEventListener("change", toggleInactiveRows);
+
+      window.addEventListener("load", function () {
+        // toggleInactiveRows();
+
+        var editedRow = document.querySelector(".table-success");
+        if (editedRow) {
+          setTimeout(function () {
+            editedRow.classList.remove("table-success");
+          }, 2000); // Remove class after n seconds
+        }
+      });
+    </script>
+  </body>
+</html>
