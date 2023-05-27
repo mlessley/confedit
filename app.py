@@ -1,9 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 from pydantic import BaseModel
+import yaml
+import os
 
+# get cwd
+cwd = os.getcwd()
+# make full path to env.yaml
+env_path = os.path.join(cwd, 'env.yaml')
+
+with open(env_path) as f:
+    config = yaml.safe_load(f)
+    
 app = Flask(__name__)
-cnx = mysql.connector.connect(user="root", password="password", host="127.0.0.1", database="app")
+cnx = mysql.connector.connect(
+    user=os.environ.get('MYSQL_USER', config['MYSQL_USER']),
+    password=os.environ.get('MYSQL_PASSWORD', config['MYSQL_PASSWORD']),
+    host=os.environ.get('MYSQL_HOST', config['MYSQL_HOST']),
+    database=os.environ.get('MYSQL_DATABASE', config['MYSQL_DATABASE'])
+)
 
 
 class ThresholdConfig(BaseModel):
