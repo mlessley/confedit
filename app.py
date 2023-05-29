@@ -129,5 +129,30 @@ def create_config():
     return redirect(url_for("index"))
 
 
+# create a config file with regexes and coresponding integer value. each regex should also have a name field
+# create code to load that file
+# create code to load an optional file in same format, that will override entries in the default file or add new entries
+# automatically load the config file and then the optional file if it exists
+import os
+import re
+import yaml
+
+def load_regex():
+    regex = {}
+    for filename in ['config.yaml', 'config_override.yaml']:
+        if os.path.exists(filename):
+            with open(filename) as f:
+                config = yaml.safe_load(f)
+            for entry in config:
+                regex[entry['pattern']] = {'name': entry['name'], 'value': entry['value']}
+    return regex
+
+def match_token(token):
+    regex = load_regex()
+    for pattern, data in regex.items():
+        if re.match(pattern, token):
+            return data['value']
+    return None
+
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
